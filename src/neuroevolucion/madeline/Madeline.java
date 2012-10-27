@@ -29,8 +29,11 @@ public class Madeline {
       
      */
     public Madeline(int entradas, int capaOculta, int capaSalida) {
+        
+        this.entradas = entradas;
         this.capaOculta = new Adeline[capaOculta];
         this.capaSalida = new Adeline[capaSalida];
+        
         for (int i = 0; i < capaOculta; i++) {
             this.capaOculta[i] = new Adeline(entradas);
         }
@@ -66,10 +69,11 @@ public class Madeline {
                                      this.capaSalida.length);
         
         for (int i = 0; i < this.capaOculta.length; i++) {
-            copy.capaOculta[i] = this.capaOculta[i].copy();
+            copy.capaOculta[i] = (this.capaOculta[i]).copy();
         }
+
         for (int i = 0; i < this.capaSalida.length; i++) {
-            copy.capaSalida[i] = this.capaOculta[i].copy();
+            copy.capaSalida[i] = (this.capaSalida[i]).copy();
         }
         return copy;
     }

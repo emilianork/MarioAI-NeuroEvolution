@@ -19,7 +19,8 @@ public class Adeline {
      */
     public Adeline(int n) {
         this.weights = new double[n];
-        for(int i = 0; i < this.weights.length; i++)  {
+        
+        for(int i = 0; i < n; i++)  {
             Random random = new Random();
             this.weights[i] = random.nextBoolean() ? 
                 ((-2.4 * random.nextDouble())/n) :
