@@ -6,6 +6,8 @@ import ch.idsia.agents.Agent;
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
 import ch.idsia.benchmark.mario.environments.Environment;
 
+//Para generar puntos de forma random.
+import java.util.Random;
 /*
   Agente que controla al persona de Mario Bros. Debe de implementar
   la interface de Agent  que indica que metodos debe de tener
@@ -102,7 +104,6 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                         network1.capaOculta[adelinePosition].weights[weightPosition];
                 }
             }
-            System.out.println(position);
         } 
 
         whichSon = false;
@@ -144,5 +145,58 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
         sons[0] = result1;
         sons[1] = result2;
         return sons;
+    }
+
+    public NeuronalAgent mutate(double probability) {
+       
+        Madeline madeline = this.madeline;
+        for (int i = 0; i < madeline.capaOculta.length;i++) {
+            for (int j = 0; j < madeline.capaOculta[i].weights.length;j++) {
+                Random random = new Random();
+                if (random.nextDouble() <= probability) {
+                    int n = madeline.capaOculta[i].weights.length;
+                    madeline.capaOculta[i].weights[j] = random.nextBoolean() ?
+                        ((-2.4 * random.nextDouble())/n) :
+                        ((2.4 * random.nextDouble())/n);
+                }
+            }
+        }
+
+        for (int i = 0; i < madeline.capaSalida.length;i++) {
+            for (int j = 0; j < madeline.capaSalida[i].weights.length;j++) {
+                Random random = new Random();
+                if (random.nextDouble() <= probability) {
+                    int n = madeline.capaSalida[i].weights.length;
+                    madeline.capaSalida[i].weights[j] =  random.nextBoolean() ?
+                        ((-2.4 * random.nextDouble())/n) :
+                        ((2.4 * random.nextDouble())/n); 
+                }
+            }
+        }
+        return this;
+    }
+
+
+    // COPIAR METODO A LA CLASE DEL ALGORITMO GENETICO.
+    /*
+      numberOfPoints => son el numero de puntos de cruza que se desean generar.
+      lengthLayer => es la longitud de la capa Oculta o la de Salida.
+     */
+    public int[] generatePoints(int numberOfPoints, int lengthLayer) {
+        
+        int[] points = new int[numberOfPoints + 1];
+        
+        int actualPosition = 0;
+        
+        for(int i = 0 ; i < numberOfPoints; i++) {
+            Random random = new Random();
+            int newPoint = lengthLayer - actualPosition;
+            points[i] = newPoint > 0 ? random.nextInt(lengthLayer - actualPosition) 
+                + actualPosition : lengthLayer;
+            actualPosition = points[i] + 1;
+        }
+        points[numberOfPoints] = lengthLayer;
+        
+        return points;
     }
 }

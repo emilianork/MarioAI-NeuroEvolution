@@ -22,9 +22,10 @@ public class Adeline {
         
         for(int i = 0; i < n; i++)  {
             Random random = new Random();
-            this.weights[i] = random.nextBoolean() ? 
-                ((-2.4 * random.nextDouble())/n) :
-                ((2.4 * random.nextDouble())/n);
+            //this.weights[i] = random.nextBoolean() ? 
+            //    ((-2.4 * random.nextDouble())/n) :
+            //    ((2.4 * random.nextDouble())/n);
+            this.weights[i] = 0.5;
         }
     }
     
