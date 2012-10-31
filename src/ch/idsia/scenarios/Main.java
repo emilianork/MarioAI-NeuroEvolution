@@ -30,6 +30,8 @@ package ch.idsia.scenarios;
 import ch.idsia.benchmark.tasks.BasicTask;
 import ch.idsia.tools.MarioAIOptions;
 
+import neuroevolucion.agent.NeuronalAgent;
+
 /**
  * Created by IntelliJ IDEA. User: Sergey Karakovskiy, sergey at idsia dot ch Date: Mar 17, 2010 Time: 8:28:00 AM
  * Package: ch.idsia.scenarios
@@ -44,6 +46,9 @@ public static void main(String[] args)
 //        final Agent agent = new ForwardAgent();
 //        final Agent agent = marioAIOptions.getAgent();
 //        final Agent a = AgentsPool.loadAgent("ch.idsia.controllers.agents.controllers.ForwardJumpingAgent");
+    
+    NeuronalAgent agent = new NeuronalAgent();
+    //marioAIOptions.setAgent(agent);
     final BasicTask basicTask = new BasicTask(marioAIOptions);
 //        for (int i = 0; i < 10; ++i)
 //        {

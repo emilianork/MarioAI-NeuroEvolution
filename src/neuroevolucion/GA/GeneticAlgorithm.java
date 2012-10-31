@@ -1,6 +1,7 @@
 package neuroevolucion.GA;
 
 import neuroevolucion.agent.NeuronalAgent;
+import neuroevolucion.madeline.Madeline;
 import java.util.ArrayList;
 
 import ch.idsia.benchmark.tasks.BasicTask;
@@ -83,9 +84,27 @@ public class GeneticAlgorithm {
         
     }
     
+    public double fitness(NeuronalAgent agent) {
+        return 0;
+    }
+    
     public void initializePopulation() {
+        for(int i = 0; i < numberOfPopulation;i++) {
+            NeuronalAgent agent = new NeuronalAgent();
+            Madeline madeline = new Madeline(inputs,hiddenLayer,outputLayer);
+            agent.setMadeline(madeline);
+            populationNew.add(i,agent);
+        }
 
+        for(int i = 0; i < numberOfPopulation;i++) {
+            fitnessNew[i] = fitness(populationNew.get(i));
+        }
+        changePopulation();
+        return;
     }
 
+    public void changePopulation() {
+        
+    }
     
 }
