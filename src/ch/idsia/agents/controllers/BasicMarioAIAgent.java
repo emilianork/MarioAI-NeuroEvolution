@@ -72,8 +72,8 @@ protected int marioEgoCol;
 // values of these variables could be changed during the Agent-Environment interaction.
 // Use them to get more detailed or less detailed description of the level.
 // for information see documentation for the benchmark <link: marioai.org/marioaibenchmark/zLevels
-int zLevelScene = 0;
-int zLevelEnemies = 0;
+int zLevelScene = 2;
+int zLevelEnemies = 2;
 
 public BasicMarioAIAgent(String s)
 {
@@ -90,7 +90,7 @@ public void integrateObservation(Environment environment)
 {
     levelScene = environment.getLevelSceneObservationZ(zLevelScene);
     enemies = environment.getEnemiesObservationZ(zLevelEnemies);
-    mergedObservation = environment.getMergedObservationZZ(0, 0);
+    mergedObservation = environment.getMergedObservationZZ(1, 1);
 
     this.marioFloatPos = environment.getMarioFloatPos();
     this.enemiesFloatPos = environment.getEnemiesFloatPos();
@@ -98,15 +98,16 @@ public void integrateObservation(Environment environment)
 
     receptiveFieldWidth = environment.getReceptiveFieldWidth();
     receptiveFieldHeight = environment.getReceptiveFieldHeight();
+
+    System.out.println(receptiveFieldWidth);
+    System.out.println(mergedObservation.length);
+    System.out.println(mergedObservation[0].length);
     
-    System.out.println(levelScene.length);
-    System.out.println(levelScene[0].length);
-    
-    System.out.println(enemies.length);
-    System.out.println(enemies[0].length);
+    System.out.println(mergedObservation.length);
+    System.out.println(mergedObservation[0].length);
     for(int i = 0; i < mergedObservation.length; i++) {
         for(int j = 0; j < mergedObservation[i].length;j++) {
-            System.out.print(mergedObservation[i][j]);
+            System.out.print(mergedObservation[i][j] + " ");
         }
         System.out.println();
     } 

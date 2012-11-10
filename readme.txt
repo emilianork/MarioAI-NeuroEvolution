@@ -31,3 +31,6 @@ Y despues pienso que abra que hacer otro programa que mande a llamaer varias vec
 con nuestro agente, y con un escenario random(segun recuerdo viene el comando en internet
 para generar los escenarios random), para que guarde la red neuronal en un archivo y cada vez
 que se ejecuta mario lea el estado en que lo dejo el mario anterior.
+
+rfw
+rfh

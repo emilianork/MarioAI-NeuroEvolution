@@ -254,23 +254,23 @@ public byte[][] getEnemiesObservationZ(int ZLevel)
         for (int h = 0; h < enemiesZ[0].length; h++)
             enemiesZ[w][h] = 0;
     for (Sprite sprite : sprites)
-    {
-        if (sprite.isDead() || sprite.kind == levelScene.mario.kind)
-            continue;
-        if (sprite.mapX >= 0 &&
+        {
+            if (sprite.isDead() || sprite.kind == levelScene.mario.kind)
+                continue;
+            if (sprite.mapX >= 0 &&
                 sprite.mapX >= levelScene.mario.mapX - marioEgoCol &&
                 sprite.mapX <= levelScene.mario.mapX + (receptiveFieldWidth - marioEgoCol - 1) &&
                 sprite.mapY >= 0 &&
                 sprite.mapY >= levelScene.mario.mapY - marioEgoRow &&
                 sprite.mapY <= levelScene.mario.mapY + (receptiveFieldHeight - marioEgoRow - 1) &&
                 sprite.kind != Sprite.KIND_PRINCESS)
-        {
-            int row = sprite.mapY - levelScene.mario.mapY + marioEgoRow;
-            int col = sprite.mapX - levelScene.mario.mapX + marioEgoCol;
-            // TODO:!H! take care about side effects of line 243 and be sure not to contaminate levelSceneObservation
-            mergedZZ[row][col] = enemiesZ[row][col] = GeneralizerEnemies.ZLevelGeneralization(sprite.kind, ZLevel);
+                {
+                    int row = sprite.mapY - levelScene.mario.mapY + marioEgoRow;
+                    int col = sprite.mapX - levelScene.mario.mapX + marioEgoCol;
+                    // TODO:!H! take care about side effects of line 243 and be sure not to contaminate levelSceneObservation
+                    mergedZZ[row][col] = enemiesZ[row][col] = GeneralizerEnemies.ZLevelGeneralization(sprite.kind, ZLevel);
+                }
         }
-    }
     return enemiesZ;
 }
 // TODO: !H! substitute the content of getMergedObservationZZ by getLevelSceneObservationZ,
