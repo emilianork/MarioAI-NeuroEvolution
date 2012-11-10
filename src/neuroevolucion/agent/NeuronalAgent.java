@@ -77,8 +77,8 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
         
         boolean whichSon = false;
         
-        int numberInputs = network1.capaOculta[0].weights.length;
-        int numberHidenLayer = network1.capaOculta.length;
+        int numberInputs = network1.capaOculta[0].weights.length + 1;
+        int numberHidenLayer = network1.capaOculta.length + 1;
 
         int position = 0;
         
@@ -91,17 +91,37 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 int weightPosition = j - adelinePosition*numberInputs;
                 
                 if (whichSon) {
+					
+					if (((j + 1)/numberInputs) == adelinePosition) {
                    
-                    son1.capaOculta[adelinePosition].weights[weightPosition] = 
-                        network1.capaOculta[adelinePosition].weights[weightPosition];
+                    	son1.capaOculta[adelinePosition].weights[weightPosition] = 
+                        	network1.capaOculta[adelinePosition].weights[weightPosition];
                     
-                    son2.capaOculta[adelinePosition].weights[weightPosition] = 
-                        network2.capaOculta[adelinePosition].weights[weightPosition];
+                    	son2.capaOculta[adelinePosition].weights[weightPosition] = 
+                        	network2.capaOculta[adelinePosition].weights[weightPosition];
+					} else {
+						son1.capaOculta[adelinePosition].theta = 
+							network1.capaOculta[adelinePosition].theta;
+						
+						son2.capaOculta[adelinePosition].theta = 
+							network2.capaOculta[adelinePosition].theta;
+					}
                 } else {
-                    son1.capaOculta[adelinePosition].weights[weightPosition] = 
-                        network2.capaOculta[adelinePosition].weights[weightPosition];
-                    son2.capaOculta[adelinePosition].weights[weightPosition] = 
-                        network1.capaOculta[adelinePosition].weights[weightPosition];
+					
+					if (((j + 1)/numberInputs) == adelinePosition) {
+					
+                    	son1.capaOculta[adelinePosition].weights[weightPosition] = 
+                        	network2.capaOculta[adelinePosition].weights[weightPosition];
+                    	son2.capaOculta[adelinePosition].weights[weightPosition] = 
+                        	network1.capaOculta[adelinePosition].weights[weightPosition];
+					} else {
+						son1.capaOculta[adelinePosition].theta = 
+							network2.capaOculta[adelinePosition].theta;
+						
+						son2.capaOculta[adelinePosition].theta = 
+							network1.capaOculta[adelinePosition].theta;
+					
+					}
                 }
             }
         } 
@@ -118,19 +138,35 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 
                 if (whichSon) {
                     
-                    son1.capaSalida[adelinePosition].weights[weightPosition] = 
-                        network1.capaSalida[adelinePosition].weights[weightPosition];
+					if (((j + 1)/numberInputs) == adelinePosition) {
+					
+                    	son1.capaSalida[adelinePosition].weights[weightPosition] = 
+                        	network1.capaSalida[adelinePosition].weights[weightPosition];
 
-                    son2.capaSalida[adelinePosition].weights[weightPosition] =
-                        network2.capaSalida[adelinePosition].weights[weightPosition];
+                    	son2.capaSalida[adelinePosition].weights[weightPosition] =
+                        	network2.capaSalida[adelinePosition].weights[weightPosition];
+					} else {
+						son1.capaSalida[adelinePosition].theta = 
+							network1.capaSalida[adelinePosition].theta;
+						
+						son2.capaSalida[adelinePosition].theta = 
+							network2.capaSalida[adelinePosition].theta;
+					}
 
                 } else {
-                    
-                    son1.capaSalida[adelinePosition].weights[weightPosition] =
-                        network2.capaSalida[adelinePosition].weights[weightPosition];
+                    if (((j + 1)/numberInputs) == adelinePosition) {
+                   		son1.capaSalida[adelinePosition].weights[weightPosition] =
+                     		network2.capaSalida[adelinePosition].weights[weightPosition];
 
-                    son2.capaSalida[adelinePosition].weights[weightPosition] = 
-                        network1.capaSalida[adelinePosition].weights[weightPosition];
+                    	son2.capaSalida[adelinePosition].weights[weightPosition] = 
+                        	network1.capaSalida[adelinePosition].weights[weightPosition];
+					} else {
+						son1.capaSalida[adelinePosition].theta = 
+							network2.capaSalida[adelinePosition].theta;
+						
+						son2.capaSalida[adelinePosition].theta = 
+							network1.capaSalida[adelinePosition].theta;
+					}
                 }
 
             }
@@ -160,6 +196,13 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                         ((2.4 * random.nextDouble())/n);
                 }
             }
+			Random random = new Random();
+            if (random.nextDouble() <= probability) {
+                int n = madeline.capaOculta[i].weights.length;
+                madeline.capaOculta[i].theta = random.nextBoolean() ?
+                    ((-2.4 * random.nextDouble())/n) :
+                    ((2.4 * random.nextDouble())/n);
+            }
         }
 
         for (int i = 0; i < madeline.capaSalida.length;i++) {
@@ -171,6 +214,13 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                         ((-2.4 * random.nextDouble())/n) :
                         ((2.4 * random.nextDouble())/n); 
                 }
+            }
+			Random random = new Random();
+            if (random.nextDouble() <= probability) {
+                int n = madeline.capaSalida[i].weights.length;
+                madeline.capaSalida[i].theta =  random.nextBoolean() ?
+                    ((-2.4 * random.nextDouble())/n) :
+                    ((2.4 * random.nextDouble())/n); 
             }
         }
         return this;

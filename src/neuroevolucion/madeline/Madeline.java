@@ -100,6 +100,7 @@ public class Madeline {
                 for(int j = 0; j < (capaOculta[0].weights).length; j++) {
                     pesosCapaOculta += (capaOculta[i].weights)[j] + " ";
                 }
+				pesosCapaOculta += capaOculta[i].theta + " ";
                 
                 pesosCapaOculta += "\n";
                 writer.write(pesosCapaOculta);
@@ -114,6 +115,7 @@ public class Madeline {
                     pesosCapaSalida += (capaSalida[i].weights)[j] + " ";
                 }
                 
+				pesosCapaSalida += capaSalida[i].theta + " ";
                 pesosCapaSalida += "\n";
                 writer.write(pesosCapaSalida);
             }
@@ -151,6 +153,9 @@ public class Madeline {
                     (capaOculta[i].weights)[j] = 
                         Double.parseDouble(pesosCapaOculta[j]);
                 }
+				
+				capaOculta[i].theta = 
+						Double.parseDouble(pesosCapaOculta[(capaOculta[0].weights).length]);
             }
             
             reader.readLine();
@@ -161,6 +166,9 @@ public class Madeline {
                     (capaSalida[i].weights)[j] = 
                         Double.parseDouble(pesosCapaSalida[j]);
                 }
+				
+				capaSalida[i].theta = 
+						Double.parseDouble(pesosCapaSalida[(capaSalida[0].weights).length]);
                 
             }
             

@@ -15,19 +15,19 @@ public class Test{
         madeline1 = madeline1.cargaMadeline("Madeline1.txt");
         madeline2 = madeline2.cargaMadeline("Madeline2.txt");
 
-        //madeline1.guardaMadeline("Madeline1");
-        //madeline2.guardaMadeline("Madeline2");
+        //madeline1.guardaMadeline("Madeline1.txt");
+        //madeline2.guardaMadeline("Madeline2.txt");
 
         parent1.setMadeline(madeline1);
         parent2.setMadeline(madeline2);
         
-        parent1.mutate(0.05);
-        parent1.madeline.guardaMadeline("Mutado.txt");
-        /*
+        //parent1.mutate(0.05);
+        //parent1.madeline.guardaMadeline("Mutado.txt");
+        
 
-        int[] points1 = parent1.generatePoints(4,15);
-        int[] points2 = parent2.generatePoints(4,15);
-        int[][] pointers = new int[2][4];
+        int[] points1 = parent1.generatePoints(1,6);
+        int[] points2 = parent2.generatePoints(1,3);
+        int[][] pointers = new int[2][2];
         pointers[0] = points1;
         pointers[1] = points2;
         
@@ -45,7 +45,7 @@ public class Test{
         sons[0].madeline.guardaMadeline("Hijo1.txt");
         sons[1].madeline.guardaMadeline("Hijo2.txt");
 
-        */
+        
     }
 }
 

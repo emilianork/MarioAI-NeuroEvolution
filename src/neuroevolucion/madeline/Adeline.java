@@ -9,6 +9,7 @@ import java.util.Random;
 public class Adeline {
     
     public double weights[];
+	public double theta;
     
     /*Guardo su salida por si la necesito en algun momento*/
     public double salida;
@@ -22,19 +23,23 @@ public class Adeline {
         
         for(int i = 0; i < n; i++)  {
             Random random = new Random();
-            //this.weights[i] = random.nextBoolean() ? 
-            //    ((-2.4 * random.nextDouble())/n) :
-            //    ((2.4 * random.nextDouble())/n);
-            this.weights[i] = 0.5;
+            this.weights[i] = random.nextBoolean() ? 
+                ((-2.4 * random.nextDouble())/n) :
+                ((2.4 * random.nextDouble())/n);
         }
+        Random random = new Random();
+         this.theta = random.nextBoolean() ? 
+            ((-2.4 * random.nextDouble())/n) :
+            ((2.4 * random.nextDouble())/n); 
     }
     
     /*
       Contruye un Adeline con los pesos ya hechos.
       Este constructor sirve principalmente para el operador de cruza
      */
-    public Adeline(double[] weights){
+    public Adeline(double[] weights, double theta){
         this.weights = weights;
+		this.theta = theta;
     } 
     
     /*
@@ -44,11 +49,13 @@ public class Adeline {
       entregar el nuevo.
      */
     public Adeline copy() {
-        Adeline copy = new Adeline(this.weights.length);
-        for (int i = 0; i < this.weights.length; i++) {
-            copy.weights[i] = this.weights[i];
+		double[] copy = new double[this.weights.length];
+		
+        for (int i = 0; i < copy.length; i++) {
+            copy[i] = this.weights[i];
         }
-        return copy;
+		Adeline newAdeline = new Adeline(copy,this.theta);
+        return newAdeline;
     }
     
     /*
@@ -59,6 +66,9 @@ public class Adeline {
         for(int i = 0; i < this.weights.length; i++) {
             this.salida += (this.weights[i] * entradas[i]);
         }
+		
+		this.salida += this.theta * (-1);
+			
         this.salida = this.disparo(this.salida);
         return this.salida;
     }
