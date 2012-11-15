@@ -2,15 +2,18 @@ package neuroevolucion.madeline;
 
 import java.util.Random;
 
+
 /*
   Clase que simula un Adeline.
   
  */
 public class Adeline {
     
-    public double weights[];
-	public double theta;
+    public int[] weights;
+	public int theta;
     
+	public final int RANGO = 91;
+	
     /*Guardo su salida por si la necesito en algun momento*/
     public double salida;
     
@@ -19,25 +22,29 @@ public class Adeline {
       inicializa entre los intervalos [-2.4/n,2.4/n]
      */
     public Adeline(int n) {
-        this.weights = new double[n];
+        this.weights = new int[n];
         
         for(int i = 0; i < n; i++)  {
             Random random = new Random();
             this.weights[i] = random.nextBoolean() ? 
-                ((-2.4 * random.nextDouble())/n) :
-                ((2.4 * random.nextDouble())/n);
+                (-1 * random.nextInt(RANGO)) :
+				random.nextInt(RANGO);
+				//((-2.4 * random.nextDouble())/n) :
+                //((2.4 * random.nextDouble())/n);		
         }
         Random random = new Random();
          this.theta = random.nextBoolean() ? 
-            ((-2.4 * random.nextDouble())/n) :
-            ((2.4 * random.nextDouble())/n); 
+         	(-1 * random.nextInt(RANGO)) :
+			random.nextInt(RANGO);
+			//((-2.4 * random.nextDouble())/n) :
+             //((2.4 * random.nextDouble())/n);	
     }
     
     /*
       Contruye un Adeline con los pesos ya hechos.
       Este constructor sirve principalmente para el operador de cruza
      */
-    public Adeline(double[] weights, double theta){
+    public Adeline(int[] weights, int theta){
         this.weights = weights;
 		this.theta = theta;
     } 
@@ -49,7 +56,7 @@ public class Adeline {
       entregar el nuevo.
      */
     public Adeline copy() {
-		double[] copy = new double[this.weights.length];
+		int[] copy = new int[this.weights.length];
 		
         for (int i = 0; i < copy.length; i++) {
             copy[i] = this.weights[i];

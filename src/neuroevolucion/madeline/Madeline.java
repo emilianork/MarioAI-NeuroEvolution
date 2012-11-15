@@ -55,7 +55,6 @@ public class Madeline {
         for (int i = 0; i < capaSalida.length; i++) {
             salidaSalida[i] = capaSalida[i].salida(salidaOculta);
         }
-	
         return salidaSalida;
     }
 
@@ -151,11 +150,11 @@ public class Madeline {
 		
                 for(int j = 0; j < (capaOculta[0].weights).length; j++) {
                     (capaOculta[i].weights)[j] = 
-                        Double.parseDouble(pesosCapaOculta[j]);
+                        Integer.parseInt(pesosCapaOculta[j]);
                 }
 				
 				capaOculta[i].theta = 
-						Double.parseDouble(pesosCapaOculta[(capaOculta[0].weights).length]);
+						Integer.parseInt(pesosCapaOculta[(capaOculta[0].weights).length]);
             }
             
             reader.readLine();
@@ -164,11 +163,11 @@ public class Madeline {
 		
                 for(int j = 0; j < (capaSalida[0].weights).length; j++) {
                     (capaSalida[i].weights)[j] = 
-                        Double.parseDouble(pesosCapaSalida[j]);
+                        Integer.parseInt(pesosCapaSalida[j]);
                 }
 				
 				capaSalida[i].theta = 
-						Double.parseDouble(pesosCapaSalida[(capaSalida[0].weights).length]);
+						Integer.parseInt(pesosCapaSalida[(capaSalida[0].weights).length]);
                 
             }
             
@@ -196,14 +195,14 @@ public class Madeline {
                 double[] entradas = new double[entradasTexto.length];
 		
                 for (int i = 0; i < entradasTexto.length - 1; i++) {
-                    entradas[i] = Double.parseDouble(entradasTexto[i]);
+                    entradas[i] = Integer.parseInt(entradasTexto[i]);
                 }
                 
                 String ultimaEntrada = 
                     (entradasTexto[entradas.length - 1].split("\n"))[0];
                 
                 entradas[entradas.length - 1] = 
-                    Double.parseDouble(ultimaEntrada);
+                    Integer.parseInt(ultimaEntrada);
                 
                 double[] salidas = procesa(entradas);
                 

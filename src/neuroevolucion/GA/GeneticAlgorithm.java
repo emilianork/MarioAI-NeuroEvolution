@@ -85,6 +85,7 @@ public class GeneticAlgorithm {
     }
     
     public double fitness(NeuronalAgent agent) {
+		
         return 0;
     }
     

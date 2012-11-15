@@ -2,10 +2,13 @@
 package neuroevolucion.agent;
 
 import neuroevolucion.madeline.Madeline;
+import neuroevolucion.madeline.Adeline;
 import ch.idsia.agents.Agent;
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
 import ch.idsia.benchmark.mario.environments.Environment;
 
+
+import ch.idsia.benchmark.mario.engine.sprites.Mario;
 //Para generar puntos de forma random.
 import java.util.Random;
 /*
@@ -19,23 +22,107 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
     
     //Objeto que representa la red neuronal.
     public Madeline madeline;
+	
+	public int zlevelScene;
+	
+	public final int RANGO = 91;
     
+	//Mario Status
+	int marioStatus;
+	int marioMode;
+	int isMarioOnGround;
+	int isMarioAbleToJump;
+	int isMarioAbleToShoot;
+	int isMarioCarrying;
+	int getKillsTotal;
+	int getKillsByFire;
+	int getKillsByStomp;
+	int getKillsByShell;
+	int getTimeLeft;
+	
+	int zLevelScene;
+		
     public NeuronalAgent() {
     	super("NeuronalAgent");
     	reset();
     }
     
     public void reset() {
-        // Reseto lo que haga falta.
+        action = new boolean[Environment.numberOfKeys];
     }
     
+	public void integrateObservation(Environment environment) {
+	    
+		mergedObservation = environment.getMergedObservationZZ(this.zLevelScene, this.zLevelScene);
+		int[] marioState = environment.getMarioState();
+		
+	    marioStatus = marioState[0];
+	    marioMode = marioState[1];
+	    isMarioOnGround = marioState[2];
+	    isMarioAbleToJump = marioState[3];
+	    isMarioAbleToShoot = marioState[4];
+	    isMarioCarrying = marioState[5];
+	    getKillsTotal = marioState[6];
+	    getKillsByFire = marioState[7];
+	    getKillsByStomp = marioState[8];
+	    getKillsByShell = marioState[9];
+		getTimeLeft = marioState[10];
+
+	    receptiveFieldWidth = environment.getReceptiveFieldWidth();
+	    receptiveFieldHeight = environment.getReceptiveFieldHeight();
+	
+		double[] entradas = new double[receptiveFieldWidth * receptiveFieldHeight + 11];
+		
+		for(int i = 0; i < mergedObservation.length; i++) {
+			int pos = mergedObservation[i].length * i;
+			for(int j = 0; j < mergedObservation[i].length; j++) {
+				entradas[pos+j] = mergedObservation[i][j];
+			}
+		}
+		
+		int length = entradas.length;
+		
+		entradas[length - 11] = marioStatus;
+		entradas[length - 10] = marioMode;
+		entradas[length - 9] = isMarioOnGround;
+		entradas[length - 8] = isMarioAbleToJump;
+		entradas[length - 7] = isMarioAbleToShoot;
+		entradas[length - 6] = isMarioCarrying;
+		entradas[length - 5] = getKillsTotal;
+		entradas[length - 4] = getKillsByFire;
+		entradas[length - 3] = getKillsByStomp;
+		entradas[length - 2] = getKillsByShell;
+		entradas[length - 1] = getTimeLeft;
+		
+		double[] salidas = this.madeline.procesa(entradas);
+	
+		for(int i = 0; i < Environment.numberOfKeys; i++) {
+			action[i] = salidas[i] > 0.5;
+		}
+		if (salidas[Mario.KEY_LEFT] < salidas[Mario.KEY_RIGHT]) {
+			action[Mario.KEY_RIGHT] = true;
+			action[Mario.KEY_LEFT] = false;
+		} else {
+			action[Mario.KEY_LEFT] = true;
+			action[Mario.KEY_RIGHT] = false;
+		}
+		if (salidas[Mario.KEY_JUMP] >= 0.5) {
+			boolean jump = isMarioAbleToJump == 1;
+			boolean ground = isMarioOnGround == 1;
+			action[Mario.KEY_JUMP] = jump || !ground;
+			//action[Mario.KEY_JUMP] = true;
+		} else {
+			//action[Mario.KEY_JUMP] = false;
+		}
+		action[Mario.KEY_UP] = false;
+	}
+	
+	
     /*
-      Dada las entradas, genero una salida.
-      Es aqui donde la red neuronal funciona.
+	Regreso las salidas que en el metodo anterior genero.
      */
     public boolean[] getAction() {
-	boolean[] ret = new boolean[Environment.numberOfKeys];
-        return ret;
+		return this.action;
     }
     
     /*
@@ -46,6 +133,10 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
     public void setMadeline(Madeline madeline) {
         this.madeline = madeline;
     }
+	
+	public void setZLevel(int i) {
+		this.zlevelScene = i;
+	}
 
     /*
       Creo una copia de la red neuronal, por si la altero, no afecte a la red
@@ -192,16 +283,16 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaOculta[i].weights.length;
                     madeline.capaOculta[i].weights[j] = random.nextBoolean() ?
-                        ((-2.4 * random.nextDouble())/n) :
-                        ((2.4 * random.nextDouble())/n);
+                        (-1 * random.nextInt(RANGO)) :
+                        random.nextInt(RANGO);
                 }
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaOculta[i].weights.length;
                 madeline.capaOculta[i].theta = random.nextBoolean() ?
-                    ((-2.4 * random.nextDouble())/n) :
-                    ((2.4 * random.nextDouble())/n);
+                    (-1 * random.nextInt(RANGO)) :
+                    random.nextInt(RANGO);
             }
         }
 
@@ -211,16 +302,16 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaSalida[i].weights.length;
                     madeline.capaSalida[i].weights[j] =  random.nextBoolean() ?
-                        ((-2.4 * random.nextDouble())/n) :
-                        ((2.4 * random.nextDouble())/n); 
+                        (-1 * random.nextInt(RANGO)) :
+                        random.nextInt(RANGO);
                 }
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaSalida[i].weights.length;
                 madeline.capaSalida[i].theta =  random.nextBoolean() ?
-                    ((-2.4 * random.nextDouble())/n) :
-                    ((2.4 * random.nextDouble())/n); 
+                    (-1 * random.nextInt(RANGO)) :
+                    random.nextInt(RANGO);
             }
         }
         return this;

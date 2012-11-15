@@ -25,18 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ch.idsia.scenarios;
+package neuroevolucion;
 
 import ch.idsia.benchmark.tasks.BasicTask;
 import ch.idsia.tools.MarioAIOptions;
 
 import neuroevolucion.agent.NeuronalAgent;
+import neuroevolucion.madeline.Madeline;
 
 /**
  * Created by IntelliJ IDEA. User: Sergey Karakovskiy, sergey at idsia dot ch Date: Mar 17, 2010 Time: 8:28:00 AM
  * Package: ch.idsia.scenarios
  */
-public final class Main
+public final class Test1
 {
 public static void main(String[] args)
 {
@@ -48,6 +49,10 @@ public static void main(String[] args)
 //        final Agent a = AgentsPool.loadAgent("ch.idsia.controllers.agents.controllers.ForwardJumpingAgent");
     
     NeuronalAgent agent = new NeuronalAgent();
+	Madeline madeline = new Madeline(19*19 + 11,4,6);
+	agent.setMadeline(madeline);
+	agent.setZLevel(0);
+	marioAIOptions.setAgent(agent);
     //marioAIOptions.setAgent(agent);
     final BasicTask basicTask = new BasicTask(marioAIOptions);
 //        for (int i = 0; i < 10; ++i)

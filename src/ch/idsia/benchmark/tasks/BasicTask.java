@@ -65,6 +65,7 @@ public BasicTask(MarioAIOptions marioAIOptions)
  * @param repetitionsOfSingleEpisode
  * @return boolean flag whether controller is disqualified or not
  */
+	 
 public boolean runSingleEpisode(final int repetitionsOfSingleEpisode)
 {
     long c = System.currentTimeMillis();
@@ -117,6 +118,7 @@ public void setOptionsAndReset(final String options)
     this.options.setArgs(options);
     reset();
 }
+
 
 public void doEpisodes(int amount, boolean verbose, final int repetitionsOfSingleEpisode)
 {

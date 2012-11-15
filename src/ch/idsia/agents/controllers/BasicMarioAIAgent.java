@@ -98,19 +98,7 @@ public void integrateObservation(Environment environment)
 
     receptiveFieldWidth = environment.getReceptiveFieldWidth();
     receptiveFieldHeight = environment.getReceptiveFieldHeight();
-
-    System.out.println(receptiveFieldWidth);
-    System.out.println(mergedObservation.length);
-    System.out.println(mergedObservation[0].length);
-    
-    System.out.println(mergedObservation.length);
-    System.out.println(mergedObservation[0].length);
-    for(int i = 0; i < mergedObservation.length; i++) {
-        for(int j = 0; j < mergedObservation[i].length;j++) {
-            System.out.print(mergedObservation[i][j] + " ");
-        }
-        System.out.println();
-    } 
+	
     //System.exit(0);
     // It also possible to use direct methods from Environment interface.
     //
