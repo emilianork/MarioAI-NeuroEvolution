@@ -9,10 +9,11 @@ import java.util.Random;
  */
 public class Adeline {
     
-    public int[] weights;
-	public int theta;
+    public double[] weights;
+	public double theta;
     
-	public final int RANGO = 91;
+	// El rango se define como [-(n-1),(n-1)]
+	public static int RANGO = 101;
 	
     /*Guardo su salida por si la necesito en algun momento*/
     public double salida;
@@ -22,29 +23,29 @@ public class Adeline {
       inicializa entre los intervalos [-2.4/n,2.4/n]
      */
     public Adeline(int n) {
-        this.weights = new int[n];
+        this.weights = new double[n];
         
         for(int i = 0; i < n; i++)  {
             Random random = new Random();
             this.weights[i] = random.nextBoolean() ? 
-                (-1 * random.nextInt(RANGO)) :
-				random.nextInt(RANGO);
-				//((-2.4 * random.nextDouble())/n) :
-                //((2.4 * random.nextDouble())/n);		
+                //(-1 * random.nextInt(RANGO)) :
+				//random.nextInt(RANGO);
+				((-2.4 * random.nextDouble())/n) :
+                ((2.4 * random.nextDouble())/n);		
         }
         Random random = new Random();
          this.theta = random.nextBoolean() ? 
-         	(-1 * random.nextInt(RANGO)) :
-			random.nextInt(RANGO);
-			//((-2.4 * random.nextDouble())/n) :
-             //((2.4 * random.nextDouble())/n);	
+         	//(-1 * random.nextInt(RANGO)) :
+			//random.nextInt(RANGO);
+			((-2.4 * random.nextDouble())/n) :
+            ((2.4 * random.nextDouble())/n);	
     }
     
     /*
       Contruye un Adeline con los pesos ya hechos.
       Este constructor sirve principalmente para el operador de cruza
      */
-    public Adeline(int[] weights, int theta){
+    public Adeline(double[] weights, double theta){
         this.weights = weights;
 		this.theta = theta;
     } 
@@ -56,7 +57,7 @@ public class Adeline {
       entregar el nuevo.
      */
     public Adeline copy() {
-		int[] copy = new int[this.weights.length];
+		double[] copy = new double[this.weights.length];
 		
         for (int i = 0; i < copy.length; i++) {
             copy[i] = this.weights[i];
@@ -86,6 +87,7 @@ public class Adeline {
      */
     public double disparo(double y) {
         //Sigmoid
+		//y = y/(RANGO*this.weights.length);
         return (1.0/(1.0 + Math.pow(Math.E,(-1.0)*y)));
     }
     

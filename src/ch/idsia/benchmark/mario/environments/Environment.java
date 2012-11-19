@@ -155,6 +155,8 @@ int[] getEvaluationInfoAsInts();
 
 String getEvaluationInfoAsString();
 
+int fitnessAsInt();
+
 EvaluationInfo getEvaluationInfo();
 
 void reset(MarioAIOptions marioAIOptions);

@@ -24,8 +24,6 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
     public Madeline madeline;
 	
 	public int zlevelScene;
-	
-	public final int RANGO = 91;
     
 	//Mario Status
 	int marioStatus;
@@ -34,11 +32,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 	int isMarioAbleToJump;
 	int isMarioAbleToShoot;
 	int isMarioCarrying;
-	int getKillsTotal;
-	int getKillsByFire;
-	int getKillsByStomp;
-	int getKillsByShell;
-	int getTimeLeft;
+	//int getTimeLeft;
 	
 	int zLevelScene;
 		
@@ -62,11 +56,11 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 	    isMarioAbleToJump = marioState[3];
 	    isMarioAbleToShoot = marioState[4];
 	    isMarioCarrying = marioState[5];
-	    getKillsTotal = marioState[6];
-	    getKillsByFire = marioState[7];
-	    getKillsByStomp = marioState[8];
-	    getKillsByShell = marioState[9];
-		getTimeLeft = marioState[10];
+	    //getKillsTotal = marioState[6];
+	    //getKillsByFire = marioState[7];
+	    //getKillsByStomp = marioState[8];
+	    //getKillsByShell = marioState[9];
+		//getTimeLeft = marioState[10];
 
 	    receptiveFieldWidth = environment.getReceptiveFieldWidth();
 	    receptiveFieldHeight = environment.getReceptiveFieldHeight();
@@ -82,21 +76,23 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 		
 		int length = entradas.length;
 		
-		entradas[length - 11] = marioStatus;
-		entradas[length - 10] = marioMode;
-		entradas[length - 9] = isMarioOnGround;
-		entradas[length - 8] = isMarioAbleToJump;
-		entradas[length - 7] = isMarioAbleToShoot;
+		entradas[length - 1] = marioStatus;
+		entradas[length - 2] = marioMode;
+		entradas[length - 3] = isMarioOnGround;
+		entradas[length - 4] = isMarioAbleToJump;
+		entradas[length - 5] = isMarioAbleToShoot;
 		entradas[length - 6] = isMarioCarrying;
-		entradas[length - 5] = getKillsTotal;
-		entradas[length - 4] = getKillsByFire;
-		entradas[length - 3] = getKillsByStomp;
-		entradas[length - 2] = getKillsByShell;
-		entradas[length - 1] = getTimeLeft;
+		//entradas[length - 7] = getKillsTotal;
+		//entradas[length - 8] = getKillsByFire;
+		//entradas[length - 9] = getKillsByStomp;
+		//entradas[length - 10] = getKillsByShell;
+		//entradas[length - 11] = getTimeLeft;
 		
 		double[] salidas = this.madeline.procesa(entradas);
 	
+		//System.out.println("\n\tSalidas:");
 		for(int i = 0; i < Environment.numberOfKeys; i++) {
+			//System.out.println("\t" + salidas[i]);
 			action[i] = salidas[i] > 0.5;
 		}
 		if (salidas[Mario.KEY_LEFT] < salidas[Mario.KEY_RIGHT]) {
@@ -146,6 +142,13 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
         Madeline copy = this.madeline.copy();
         return copy;
     }
+
+	public NeuronalAgent copy() {
+		NeuronalAgent agent = new NeuronalAgent();
+		agent.setMadeline(this.getMadeline());
+		return agent;
+		
+	}
     
     /*
       Dado un arreglo de puntos genero dos nuevos hijos.
@@ -274,7 +277,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
         return sons;
     }
 
-    public NeuronalAgent mutate(double probability) {
+    public NeuronalAgent mutation(double probability) {
        
         Madeline madeline = this.madeline;
         for (int i = 0; i < madeline.capaOculta.length;i++) {
@@ -283,16 +286,16 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaOculta[i].weights.length;
                     madeline.capaOculta[i].weights[j] = random.nextBoolean() ?
-                        (-1 * random.nextInt(RANGO)) :
-                        random.nextInt(RANGO);
+                        (-1 * random.nextInt(Adeline.RANGO)) :
+                        random.nextInt(Adeline.RANGO);
                 }
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaOculta[i].weights.length;
                 madeline.capaOculta[i].theta = random.nextBoolean() ?
-                    (-1 * random.nextInt(RANGO)) :
-                    random.nextInt(RANGO);
+                    (-1 * random.nextInt(Adeline.RANGO)) :
+                    random.nextInt(Adeline.RANGO);
             }
         }
 
@@ -302,42 +305,18 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaSalida[i].weights.length;
                     madeline.capaSalida[i].weights[j] =  random.nextBoolean() ?
-                        (-1 * random.nextInt(RANGO)) :
-                        random.nextInt(RANGO);
+                        (-1 * random.nextInt(Adeline.RANGO)) :
+                        random.nextInt(Adeline.RANGO);
                 }
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaSalida[i].weights.length;
                 madeline.capaSalida[i].theta =  random.nextBoolean() ?
-                    (-1 * random.nextInt(RANGO)) :
-                    random.nextInt(RANGO);
+                    (-1 * random.nextInt(Adeline.RANGO)) :
+                    random.nextInt(Adeline.RANGO);
             }
         }
         return this;
-    }
-
-
-    // COPIAR METODO A LA CLASE DEL ALGORITMO GENETICO.
-    /*
-      numberOfPoints => son el numero de puntos de cruza que se desean generar.
-      lengthLayer => es la longitud de la capa Oculta o la de Salida.
-     */
-    public int[] generatePoints(int numberOfPoints, int lengthLayer) {
-        
-        int[] points = new int[numberOfPoints + 1];
-        
-        int actualPosition = 0;
-        
-        for(int i = 0 ; i < numberOfPoints; i++) {
-            Random random = new Random();
-            int newPoint = lengthLayer - actualPosition;
-            points[i] = newPoint > 0 ? random.nextInt(lengthLayer - actualPosition) 
-                + actualPosition : lengthLayer;
-            actualPosition = points[i] + 1;
-        }
-        points[numberOfPoints] = lengthLayer;
-        
-        return points;
     }
 }

@@ -9,7 +9,7 @@ public class Test{
         NeuronalAgent parent1 = new NeuronalAgent();
         NeuronalAgent parent2 = new NeuronalAgent();
         
-        Madeline madeline1 = new Madeline(15,15,1);
+        Madeline madeline1 = new Madeline(6,3,1);
         Madeline madeline2 = new Madeline(15,15,1);
 
         madeline1 = madeline1.cargaMadeline("Madeline1.txt");
@@ -24,7 +24,7 @@ public class Test{
         //parent1.mutate(0.05);
         //parent1.madeline.guardaMadeline("Mutado.txt");
         
-
+		/*
         int[] points1 = parent1.generatePoints(1,6);
         int[] points2 = parent2.generatePoints(1,3);
         int[][] pointers = new int[2][2];
@@ -44,7 +44,7 @@ public class Test{
         
         sons[0].madeline.guardaMadeline("Hijo1.txt");
         sons[1].madeline.guardaMadeline("Hijo2.txt");
-
+		*/
         
     }
 }

@@ -95,7 +95,7 @@ private MarioEnvironment()
 //        System.out.println("System.getProperty(\"verbose\") = " + System.getProperty("-verbose"));
 //        System.out.println("Java: JA ZDES'!!");
 //        System.out.flush();
-    System.out.println(GlobalOptions.getBenchmarkName());
+    //System.out.println(GlobalOptions.getBenchmarkName());
     levelScene = new LevelScene();
 }
 
@@ -567,6 +567,12 @@ public int[] getEvaluationInfoAsInts()
 public String getEvaluationInfoAsString()
 {
     return this.getEvaluationInfo().toString();
+}
+
+public int fitnessAsInt() {
+	computeEvaluationInfo();
+	int fitness  = evaluationInfo.computeWeightedFitness();
+	return fitness;
 }
 
 public EvaluationInfo getEvaluationInfo()

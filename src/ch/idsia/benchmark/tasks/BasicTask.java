@@ -130,8 +130,9 @@ public void doEpisodes(int amount, boolean verbose, final int repetitionsOfSingl
     {
         this.reset();
         this.runSingleEpisode(repetitionsOfSingleEpisode);
-        if (verbose)
+        if (verbose) {
             System.out.println(environment.getEvaluationInfoAsString());
+		}
 
         for (int j = 0; j < EvaluationInfo.numberOfElements; j++)
         {
@@ -139,7 +140,16 @@ public void doEpisodes(int amount, boolean verbose, final int repetitionsOfSingl
         }
     }
 
-    System.out.println(statistics.get(3).toString());
+    //System.out.println(statistics.get(3).toString());
+}
+
+
+/*
+Me regresa la puntuacion del Agente durante el nivel.
+	
+*/
+public int fitness() {
+	return environment.fitnessAsInt();
 }
 
 public boolean isFinished()

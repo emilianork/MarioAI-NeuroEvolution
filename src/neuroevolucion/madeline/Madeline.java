@@ -1,5 +1,7 @@
 package neuroevolucion.madeline;
 
+import neuroevolucion.madeline.Adeline;
+
 // Clases que sirve para guarda y escribir Madelines en la memoria.
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -49,7 +51,8 @@ public class Madeline {
         double[] salidaOculta = new double[capaOculta.length];
         double[] salidaSalida = new double[capaSalida.length];
         for (int i = 0; i < capaOculta.length;i++) {
-            salidaOculta[i] = capaOculta[i].salida(entradas);
+			double salida = capaOculta[i].salida(entradas);
+            salidaOculta[i] = (salida - 0.5)*(2*Adeline.RANGO);
         }
 	
         for (int i = 0; i < capaSalida.length; i++) {
@@ -150,11 +153,11 @@ public class Madeline {
 		
                 for(int j = 0; j < (capaOculta[0].weights).length; j++) {
                     (capaOculta[i].weights)[j] = 
-                        Integer.parseInt(pesosCapaOculta[j]);
+                        Double.parseDouble(pesosCapaOculta[j]);
                 }
 				
 				capaOculta[i].theta = 
-						Integer.parseInt(pesosCapaOculta[(capaOculta[0].weights).length]);
+						Double.parseDouble(pesosCapaOculta[(capaOculta[0].weights).length]);
             }
             
             reader.readLine();
@@ -163,11 +166,11 @@ public class Madeline {
 		
                 for(int j = 0; j < (capaSalida[0].weights).length; j++) {
                     (capaSalida[i].weights)[j] = 
-                        Integer.parseInt(pesosCapaSalida[j]);
+                        Double.parseDouble(pesosCapaSalida[j]);
                 }
 				
 				capaSalida[i].theta = 
-						Integer.parseInt(pesosCapaSalida[(capaSalida[0].weights).length]);
+						Double.parseDouble(pesosCapaSalida[(capaSalida[0].weights).length]);
                 
             }
             
@@ -195,14 +198,14 @@ public class Madeline {
                 double[] entradas = new double[entradasTexto.length];
 		
                 for (int i = 0; i < entradasTexto.length - 1; i++) {
-                    entradas[i] = Integer.parseInt(entradasTexto[i]);
+                    entradas[i] = Double.parseDouble(entradasTexto[i]);
                 }
                 
                 String ultimaEntrada = 
                     (entradasTexto[entradas.length - 1].split("\n"))[0];
                 
                 entradas[entradas.length - 1] = 
-                    Integer.parseInt(ultimaEntrada);
+                    Double.parseDouble(ultimaEntrada);
                 
                 double[] salidas = procesa(entradas);
                 
