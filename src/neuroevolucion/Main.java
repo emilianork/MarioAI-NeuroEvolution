@@ -5,6 +5,7 @@ import ch.idsia.tools.MarioAIOptions;
 
 import neuroevolucion.agent.NeuronalAgent;
 import neuroevolucion.madeline.Madeline;
+import neuroevolucion.GA.GeneticAlgorithm;
 
 public final class Main {
 	
@@ -17,6 +18,17 @@ public final class Main {
 
 		MarioAIOptions[] options = new MarioAIOptions[semillas.length];
 		
+		int numberOfPopulation = 100;
+		int inputs = 19*19 + 6;
+		int hiddenLayer = 4;
+		int outputLayer = 6;
+		int numberParticipants = 6; 
+		int numberOfElitism = 4;
+		int maxGenerations = 10;
+		double proMutation = 0.01;
+		double proCrossover = 0.85;
+		int pointsCrossover = 1;
+		
 		// Genero los arreglos de argumentos de los niveles;
 		for(int i = 0; i < semillas.length;i++){
 			String[] nivel = {"-ls",semillas[i],"-ld",dificultad,"-vis","off"};
@@ -26,5 +38,12 @@ public final class Main {
 		for(int i = 0; i < niveles.length;i++) {
 			options[i] = new MarioAIOptions(niveles[i]);
 		}
+		
+		GeneticAlgorithm genetic = new GeneticAlgorithm(numberOfPopulation,inputs,hiddenLayer,
+														outputLayer, numberParticipants,
+														numberOfElitism, maxGenerations,
+														proMutation, proCrossover, options,
+														pointsCrossover);
+		genetic.run();
 	}
 }

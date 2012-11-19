@@ -172,7 +172,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
         boolean whichSon = false;
         
         int numberInputs = network1.capaOculta[0].weights.length + 1;
-        int numberHidenLayer = network1.capaOculta.length + 1;
+        int numberHidenLayer = network1.capaSalida[0].weights.length + 1;
 
         int position = 0;
         
@@ -232,8 +232,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 
                 if (whichSon) {
                     
-					if (((j + 1)/numberInputs) == adelinePosition) {
-					
+					if (((j + 1)/numberHidenLayer) == adelinePosition) {
                     	son1.capaSalida[adelinePosition].weights[weightPosition] = 
                         	network1.capaSalida[adelinePosition].weights[weightPosition];
 
@@ -248,7 +247,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 					}
 
                 } else {
-                    if (((j + 1)/numberInputs) == adelinePosition) {
+                    if (((j + 1)/numberHidenLayer) == adelinePosition) {
                    		son1.capaSalida[adelinePosition].weights[weightPosition] =
                      		network2.capaSalida[adelinePosition].weights[weightPosition];
 
@@ -286,16 +285,21 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaOculta[i].weights.length;
                     madeline.capaOculta[i].weights[j] = random.nextBoolean() ?
-                        (-1 * random.nextInt(Adeline.RANGO)) :
-                        random.nextInt(Adeline.RANGO);
+			         	//(-1 * random.nextInt(RANGO)) :
+						//random.nextInt(RANGO);
+						((-2.4 * random.nextDouble())/n) :
+			            ((2.4 * random.nextDouble())/n);
                 }
+			
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaOculta[i].weights.length;
                 madeline.capaOculta[i].theta = random.nextBoolean() ?
-                    (-1 * random.nextInt(Adeline.RANGO)) :
-                    random.nextInt(Adeline.RANGO);
+		         	//(-1 * random.nextInt(RANGO)) :
+					//random.nextInt(RANGO);
+					((-2.4 * random.nextDouble())/n) :
+		            ((2.4 * random.nextDouble())/n);
             }
         }
 
@@ -305,16 +309,20 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
                 if (random.nextDouble() <= probability) {
                     int n = madeline.capaSalida[i].weights.length;
                     madeline.capaSalida[i].weights[j] =  random.nextBoolean() ?
-                        (-1 * random.nextInt(Adeline.RANGO)) :
-                        random.nextInt(Adeline.RANGO);
+			         	//(-1 * random.nextInt(RANGO)) :
+						//random.nextInt(RANGO);
+						((-2.4 * random.nextDouble())/n) :
+			            ((2.4 * random.nextDouble())/n);
                 }
             }
 			Random random = new Random();
             if (random.nextDouble() <= probability) {
                 int n = madeline.capaSalida[i].weights.length;
                 madeline.capaSalida[i].theta =  random.nextBoolean() ?
-                    (-1 * random.nextInt(Adeline.RANGO)) :
-                    random.nextInt(Adeline.RANGO);
+		         	//(-1 * random.nextInt(RANGO)) :
+					//random.nextInt(RANGO);
+					((-2.4 * random.nextDouble())/n) :
+		            ((2.4 * random.nextDouble())/n);
             }
         }
         return this;

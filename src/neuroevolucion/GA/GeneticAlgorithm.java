@@ -9,6 +9,10 @@ import ch.idsia.tools.MarioAIOptions;
 import java.util.Random;
 import java.util.Arrays;
 
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public class GeneticAlgorithm {
 
     //Variables de la poblacion.
@@ -92,7 +96,7 @@ public class GeneticAlgorithm {
 	*/
 	public void run() {
 		int index;
-		for (int i = 0; i < this.maxGenerations; i++) {
+		for (int i = 1; i < this.maxGenerations; i++) {
 			index = 0;
 			for (int j = 0; j < this.numberOfPopulation/2; j++) {
 				boolean crossover = true;
@@ -136,6 +140,7 @@ public class GeneticAlgorithm {
 			getElitism();
 			getBest();
 		}
+		saveData();
 		return;
 	}
 	
@@ -148,6 +153,7 @@ public class GeneticAlgorithm {
 			// Puede que aqui este mal, no estoy seguro.
 			// se arregla con elitism[i].copy();
 			populationNew[i] = elitism[i];
+			fitnessNew[i] = fitnessElitism[i];
 		}
 	}
 	
@@ -157,6 +163,7 @@ public class GeneticAlgorithm {
     public double fitness(NeuronalAgent agent) {
 		int fitness = 0;
 		for(int i = 0; i < options.length; i++) {
+			options[i].setAgent(agent);
 			BasicTask task = new BasicTask(options[i]);
 			task.doEpisodes(1,false,1);
 			fitness += task.fitness();
@@ -195,9 +202,11 @@ public class GeneticAlgorithm {
 		int[] mejores = getMejores(numberOfElitism);
 		
 		elitism = new NeuronalAgent[numberOfElitism];
-		
+		fitnessElitism = new double[numberOfElitism];
+ 		
 		for (int i = 0; i < numberOfElitism; i++) {
 			elitism[i] = populationOld[mejores[i]].copy();
+			fitnessElitism[i] = fitnessOld[mejores[i]];
 		}
 		return;
 	}
@@ -278,6 +287,7 @@ public class GeneticAlgorithm {
 		}
         fitnessNew = new double[numberOfPopulation];
  		populationNew = new NeuronalAgent[numberOfPopulation];
+		generation += 1;
     }
 
     /*
@@ -301,5 +311,22 @@ public class GeneticAlgorithm {
         
         return points;
     }
+
+	public void saveData() {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("MarioAI.data"));
+			for (int i = 0; i < maxGenerations; i++) {
+				String generationFitness = "";
+				for (int j = 0; j < numberOfPopulation;j++) {
+					generationFitness += data[i][j] + " ";
+				}
+				writer.write(generationFitness+"\n");
+			} 
+			writer.close();
+		} catch (IOException ioe) {
+			System.out.println("No se guardo nada");
+		}
+	
+	}
     
 }
