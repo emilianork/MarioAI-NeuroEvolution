@@ -87,17 +87,23 @@ public SpriteTemplate spriteTemplate;
 
 public static void setCreaturesGravity(final float creaturesGravity)
 {
-    Sprite.creaturesGravity = creaturesGravity;
+	synchronized(Sprite.class) {
+    	Sprite.creaturesGravity = creaturesGravity;
+	}
 }
 
 public static void setCreaturesWind(final float wind)
 {
-    Sprite.windCoeff = wind;
+	synchronized(Sprite.class) {
+    	Sprite.windCoeff = wind;
+	}
 }
 
 public static void setCreaturesIce(final float ice)
 {
-    Sprite.iceCoeff = ice;
+	synchronized(Sprite.class) {
+    	Sprite.iceCoeff = ice;
+	}
 }
 
 protected static float creaturesGravity;
@@ -106,6 +112,7 @@ protected static float iceCoeff = 0;
 
 public static String getNameByKind(final int kind)
 {
+	synchronized(Sprite.class) {
     switch (kind)
     {
         case Sprite.KIND_MARIO:
@@ -141,7 +148,7 @@ public static String getNameByKind(final int kind)
         case Sprite.KIND_PRINCESS:
             return "Princess";
     }
-
+	}
     return "Unknown";
 }
 

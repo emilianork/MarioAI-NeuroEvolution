@@ -50,12 +50,12 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 		mergedObservation = environment.getMergedObservationZZ(this.zLevelScene, this.zLevelScene);
 		int[] marioState = environment.getMarioState();
 		
-	    marioStatus = marioState[0];
+	    //marioStatus = marioState[0];
 	    marioMode = marioState[1];
 	    isMarioOnGround = marioState[2];
 	    isMarioAbleToJump = marioState[3];
 	    isMarioAbleToShoot = marioState[4];
-	    isMarioCarrying = marioState[5];
+	    //isMarioCarrying = marioState[5];
 	    //getKillsTotal = marioState[6];
 	    //getKillsByFire = marioState[7];
 	    //getKillsByStomp = marioState[8];
@@ -81,7 +81,7 @@ public class NeuronalAgent extends BasicMarioAIAgent implements Agent {
 		entradas[length - 3] = isMarioOnGround;
 		entradas[length - 4] = isMarioAbleToJump;
 		entradas[length - 5] = isMarioAbleToShoot;
-		entradas[length - 6] = isMarioCarrying;
+		//entradas[length - 6] = isMarioCarrying;
 		//entradas[length - 7] = getKillsTotal;
 		//entradas[length - 8] = getKillsByFire;
 		//entradas[length - 9] = getKillsByStomp;

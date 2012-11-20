@@ -198,22 +198,24 @@ public void tick()
 
     fireballsOnScreen = 0;
 
-    for (Sprite sprite : sprites)
-    {
-        if (sprite != mario)
-        {
-            float xd = sprite.x - xCam;
-            float yd = sprite.y - yCam;
-            if (xd < -64 || xd > GlobalOptions.VISUAL_COMPONENT_WIDTH + 64 || yd < -64 || yd > GlobalOptions.VISUAL_COMPONENT_HEIGHT + 64)
-            {
-                removeSprite(sprite);
-            } else
-            {
-                if (sprite instanceof Fireball)
-                    fireballsOnScreen++;
-            }
-        }
-    }
+
+
+		    for (Sprite sprite : sprites)
+		    {
+		        if (sprite != mario)
+		        {
+		            float xd = sprite.x - xCam;
+		            float yd = sprite.y - yCam;
+		            if (xd < -64 || xd > GlobalOptions.VISUAL_COMPONENT_WIDTH + 64 || yd < -64 || yd > GlobalOptions.VISUAL_COMPONENT_HEIGHT + 64)
+		            {
+		                removeSprite(sprite);
+		            } else
+		            {
+		                if (sprite instanceof Fireball)
+		                    fireballsOnScreen++;
+		            }
+		        }
+		    }	
 
     tickCount++;
     level.tick();
@@ -271,7 +273,8 @@ public void tick()
         }
 
     for (Sprite sprite : sprites)
-        sprite.tick();
+    	sprite.tick();
+
 
     byte levelElement = level.getBlock(mario.mapX, mario.mapY);
     if (levelElement == (byte) (13 + 3 * 16) || levelElement == (byte) (13 + 5 * 16))
@@ -311,11 +314,14 @@ public void tick()
     }
     shellsToCheck.clear();
 
-    for (Fireball fireball : fireballsToCheck)
+    for (Fireball fireball : fireballsToCheck) {
         for (Sprite sprite : sprites)
-            if (sprite != fireball && !fireball.dead)
-                if (sprite.fireballCollideCheck(fireball))
-                    fireball.die();
+	         if (sprite != fireball && !fireball.dead)
+	         	if (sprite.fireballCollideCheck(fireball))
+	            	fireball.die();
+		}
+
+
     fireballsToCheck.clear();
 
 

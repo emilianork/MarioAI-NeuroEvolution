@@ -2,9 +2,11 @@ package neuroevolucion.GA;
 
 import neuroevolucion.agent.NeuronalAgent;
 import neuroevolucion.madeline.Madeline;
+import neuroevolucion.GA.Fitness;
 
 import ch.idsia.benchmark.tasks.BasicTask;
 import ch.idsia.tools.MarioAIOptions;
+
 
 import java.util.Random;
 import java.util.Arrays;
@@ -12,6 +14,8 @@ import java.util.Arrays;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+
+import java.util.ConcurrentModificationException;
 
 public class GeneticAlgorithm {
 
@@ -52,13 +56,16 @@ public class GeneticAlgorithm {
     public double theBestFitness;
 
     //Variable de los entornos del juego;
-    public MarioAIOptions[] options;
+    public MarioAIOptions[][] options;
+
+	public Fitness[] fitnessThread;
 
     public GeneticAlgorithm(int numberOfPopulation, int inputs, int hiddenLayer,
                             int outputLayer,int numberParticipants,
                             int numberOfElitism, int maxGenerations, 
                             double proMutation, double proCrossover,
-                            MarioAIOptions[] options, int pointsCrossover) {
+                            int pointsCrossover,
+							String dificultad,String[] semillas) {
 								
         this.numberOfPopulation = numberOfPopulation;
         this.inputs = inputs;
@@ -69,9 +76,21 @@ public class GeneticAlgorithm {
         this.maxGenerations = maxGenerations;
         this.proMutation = proMutation;
         this.proCrossover = proCrossover;
-        this.options = options;
 		this.pointsCrossover = pointsCrossover;
 		this.generation = 0;
+		
+		
+		// Genero los niveles de cada individuo 
+		options = new MarioAIOptions[numberOfPopulation][semillas.length];
+		
+		
+		for (int i = 0; i < numberOfPopulation; i++) {
+			for(int j = 0;j < semillas.length;j++) {
+				String[] nivel = {"-ls",semillas[j],"-ld",dificultad,"-vis","off","-rfw", "5",
+				"-rfh","5"};
+				options[i][j] = new MarioAIOptions(nivel);
+			}
+		}
 		
         // Inicializamos los arreglos de todo.
         
@@ -131,10 +150,11 @@ public class GeneticAlgorithm {
 				}
 				populationNew[index] = son1;
 				populationNew[index + 1] = son2;
-				fitnessNew[index] = fitness(son1);
-				fitnessOld[index + 1] = fitness(son2);
+				//fitnessNew[index] = fitness(son1,index);
+				//fitnessNew[index + 1] = fitness(son2,index+1);
 				index += 2;
 			}
+			evaluaPoblacion();
 			setElitism();
 			changePopulation();
 			getElitism();
@@ -142,6 +162,34 @@ public class GeneticAlgorithm {
 		}
 		saveData();
 		return;
+	}
+	
+	public void evaluaPoblacion() {
+		fitnessThread = new Fitness[numberOfPopulation];
+		fitnessNew =  new double[numberOfPopulation];
+		for (int i = 0; i < numberOfPopulation; i++) {
+			fitnessThread[i] = new Fitness(i,fitnessNew,populationNew[i],options[i]); 
+		}
+		for (int i = 0; i < numberOfPopulation; i++) {
+			try {
+				fitnessThread[i].start();
+			} catch (ConcurrentModificationException cme) {
+				System.out.println("La evaluacion fallo:");
+				System.out.println("Generacion = " + generation);
+				System.out.println("Individuo = " + i);
+				System.exit(0);	
+			}
+		}
+		for (int i = 0; i < numberOfPopulation; i++) {
+			try {
+				fitnessThread[i].join();
+			} catch (InterruptedException ie) {
+				System.out.println("La evaluacion fallo:");
+				System.out.println("Generacion = " + generation);
+				System.out.println("Individuo = " + i);
+				System.exit(0);
+			}
+		}
 	}
 	
 	/*
@@ -160,11 +208,12 @@ public class GeneticAlgorithm {
 	/*
 	Calcula el promedio de fitness de un individuo
 	*/
-    public double fitness(NeuronalAgent agent) {
+   	
+ 	public double fitness(NeuronalAgent agent,int index) {
 		int fitness = 0;
-		for(int i = 0; i < options.length; i++) {
-			options[i].setAgent(agent);
-			BasicTask task = new BasicTask(options[i]);
+		for(int i = 0; i < options[index].length; i++) {
+			(options[index][i]).setAgent(agent);
+			BasicTask task = new BasicTask(options[index][i]);
 			task.doEpisodes(1,false,1);
 			fitness += task.fitness();
 		}
@@ -184,9 +233,10 @@ public class GeneticAlgorithm {
             populationNew[i] = agent;
         }
 
-        for(int i = 0; i < numberOfPopulation;i++) {
-            fitnessNew[i] = fitness(populationNew[i]);
-        }
+        /*for(int i = 0; i < numberOfPopulation;i++) {
+            fitnessNew[i] = fitness(populationNew[i],i);
+        }*/
+		evaluaPoblacion();
         changePopulation();
 		getElitism();
 		getBest();
