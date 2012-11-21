@@ -23,7 +23,7 @@ public final class Main {
 		double proMutation = 0.01;
 		double proCrossover = 0.85;
 		int pointsCrossover = 5;
-		String malla = "5"
+		String malla = "5";
 
 		
 		GeneticAlgorithm genetic = new GeneticAlgorithm(numberOfPopulation,inputs,hiddenLayer,
