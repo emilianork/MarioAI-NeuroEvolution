@@ -13,23 +13,24 @@ public final class Main {
 		String dificultad = "1";
 		String[] semillas = {"1","2","3","4","5","6","7","8","9","10"};
 		
-		int numberOfPopulation = 2;
+		int numberOfPopulation = 100;
 		int inputs = 5*5 + 6;
 		int hiddenLayer = 4;
 		int outputLayer = 6;
 		int numberParticipants = 6; 
 		int numberOfElitism = 4;
-		int maxGenerations = 3;
+		int maxGenerations = 500;
 		double proMutation = 0.01;
 		double proCrossover = 0.85;
-		int pointsCrossover = 2;
+		int pointsCrossover = 5;
+		String malla = "5"
 
 		
 		GeneticAlgorithm genetic = new GeneticAlgorithm(numberOfPopulation,inputs,hiddenLayer,
 														outputLayer, numberParticipants,
 														numberOfElitism, maxGenerations,
 														proMutation, proCrossover,
-														pointsCrossover,dificultad,semillas);
+														pointsCrossover,dificultad,semillas,malla);
 		genetic.run();
 	}
 }

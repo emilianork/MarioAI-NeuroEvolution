@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public final class LevelScene implements SpriteContext
 {
 public static final boolean[] defaultKeys = new boolean[Environment.numberOfKeys];
@@ -50,9 +52,9 @@ public static final String[] keysStr = {"<<L ", "R>> ", "\\\\//", "JUMP", " RUN"
 
 public static final int cellSize = 16;
 
-final public List<Sprite> sprites = new ArrayList<Sprite>();
-final private List<Sprite> spritesToAdd = new ArrayList<Sprite>();
-final private List<Sprite> spritesToRemove = new ArrayList<Sprite>();
+final public List<Sprite> sprites = new CopyOnWriteArrayList<Sprite>();
+final private List<Sprite> spritesToAdd = new CopyOnWriteArrayList<Sprite>();
+final private List<Sprite> spritesToRemove = new CopyOnWriteArrayList<Sprite>();
 
 public Level level;
 public Mario mario;

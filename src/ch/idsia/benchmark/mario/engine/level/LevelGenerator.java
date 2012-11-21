@@ -99,7 +99,7 @@ static Level.objCounters counters = new Level.objCounters();
 
 private LevelGenerator() {}
 
-private static void loadLevel(String filePath)
+private static synchronized void loadLevel(String filePath)
 {
     try
     {
@@ -121,7 +121,7 @@ private static void loadLevel(String filePath)
     }
 }
 
-public static Level createLevel(MarioAIOptions args)
+public static synchronized Level createLevel(MarioAIOptions args)
 {
     // -ls option can also loadAgent level from file if filename instead of a number provided
     levelType = args.getLevelType();
@@ -251,7 +251,7 @@ public static Level createLevel(MarioAIOptions args)
     return level;
 }
 
-private static void setPrincess(int x, int y)
+private static synchronized void setPrincess(int x, int y)
 {
 //    System.out.println("x = " + x);
 //    System.out.println("y = " + y);
@@ -259,7 +259,7 @@ private static void setPrincess(int x, int y)
     level.setBlock(x, y, (byte) (15 + 15 * 16));
 }
 
-private static int buildZone(int x, int maxLength, int maxHeight, int floor, int floorHeight)
+private static synchronized int buildZone(int x, int maxLength, int maxHeight, int floor, int floorHeight)
 {
 //    System.out.println("buildZone maxLength = " + maxLength);
     int t = globalRandom.nextInt(totalOdds);
@@ -341,7 +341,7 @@ private static int buildZone(int x, int maxLength, int maxHeight, int floor, int
     return length;
 }
 
-private static void buildCeiling(int x0, int length)
+private static synchronized void buildCeiling(int x0, int length)
 {
     int maxCeilingHeight = 3;
     int ceilingLength = length;
@@ -382,7 +382,7 @@ private static void buildCeiling(int x0, int length)
     }
 }
 
-private static void addEnemy(int x, int y)
+private static synchronized void addEnemy(int x, int y)
 {
     if (!creaturesRandom.canAdd())
         return;
@@ -401,7 +401,7 @@ private static void addEnemy(int x, int y)
 //x0 - first block to start from
 //maxLength - maximal length of the zone
 
-private static int buildDeadEnds(int x0, int maxLength)
+private static synchronized int buildDeadEnds(int x0, int maxLength)
 {
     //first of all build pre dead end zone
     int floor = height - 2 - globalRandom.nextInt(2);  //floor of pre dead end zone
@@ -498,7 +498,7 @@ private static int buildDeadEnds(int x0, int maxLength)
     return length + tLength;
 }
 
-private static void buildLadder(int x0, int floor, int maxHeight)
+private static synchronized void buildLadder(int x0, int floor, int maxHeight)
 {
     int ladderHeight = globalRandom.nextInt(height);
     if (ladderHeight > maxHeight && maxHeight != ANY_HEIGHT)
@@ -515,7 +515,7 @@ private static void buildLadder(int x0, int floor, int maxHeight)
     level.setBlock(x0, floor - ladderHeight, (byte) (13 + 5 * 16));
 }
 
-private static int buildGap(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
+private static synchronized int buildGap(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
 {
     int gs = globalRandom.nextInt(5) + 2; //GapStairs
     int gl = globalRandom.nextInt(levelDifficulty) + levelDifficulty > 7 ? 10 : 3;//globalRandom.nextInt(2) + 2; //GapLength
@@ -584,7 +584,7 @@ private static int buildGap(int xo, int maxLength, int maxHeight, int vfloor, in
     return length;
 }
 
-private static int buildCannons(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
+private static synchronized int buildCannons(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
 {
     int maxCannonHeight = 0;
     int length = globalRandom.nextInt(10) + 2;
@@ -673,7 +673,7 @@ private static int buildCannons(int xo, int maxLength, int maxHeight, int vfloor
     return length;
 }
 
-private static int buildHill(int x0, boolean withStraight, int maxLength, int vfloor, boolean isInGap)
+private static synchronized int buildHill(int x0, boolean withStraight, int maxLength, int vfloor, boolean isInGap)
 {
     int length = globalRandom.nextInt(10) + 10;
     if (length > maxLength)
@@ -750,7 +750,7 @@ private static int buildHill(int x0, boolean withStraight, int maxLength, int vf
     return length;
 }
 
-private static int buildTubes(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
+private static synchronized int buildTubes(int xo, int maxLength, int maxHeight, int vfloor, int floorHeight)
 {
     int maxTubeHeight = 0;
     int length = globalRandom.nextInt(10) + 5;
@@ -860,7 +860,7 @@ private static int buildTubes(int xo, int maxLength, int maxHeight, int vfloor, 
 // minimal length = 2
 //floorHeight - height of the floor. used for building of the top part of the dead end separator
 
-private static int buildStraight(int xo, int maxLength, boolean safe, int vfloor, int floorHeight)
+private static synchronized int buildStraight(int xo, int maxLength, boolean safe, int vfloor, int floorHeight)
 {
     int length;
     if (floorHeight != INFINITE_FLOOR_HEIGHT)
@@ -905,7 +905,7 @@ private static int buildStraight(int xo, int maxLength, boolean safe, int vfloor
     return length;
 }
 
-private static boolean canBuildBlocks(int x0, int floor, boolean isHB)
+private static synchronized boolean canBuildBlocks(int x0, int floor, boolean isHB)
 {
     if ((counters.blocksCount >= counters.totalBlocks && !isHB))
     {
@@ -931,7 +931,7 @@ private static boolean canBuildBlocks(int x0, int floor, boolean isHB)
     return res;
 }
 
-private static boolean buildBlocks(int x0, int x1, int floor, boolean pHB, int pS, int pE, boolean onlyHB, boolean isDistance)
+private static synchronized boolean buildBlocks(int x0, int x1, int floor, boolean pHB, int pS, int pE, boolean onlyHB, boolean isDistance)
 {
     boolean result = false;
     if (counters.blocksCount > counters.totalBlocks)
@@ -1049,7 +1049,7 @@ private static boolean buildBlocks(int x0, int x1, int floor, boolean pHB, int p
     return result;
 }
 
-private static void buildCoins(int x0, int x1, int floor, int s, int e)
+private static synchronized void buildCoins(int x0, int x1, int floor, int s, int e)
 {
     if (floor - 2 < 0) return;
     //if (!isFlatLevel)
@@ -1070,7 +1070,7 @@ private static void buildCoins(int x0, int x1, int floor, int s, int e)
     }
 }
 
-private static void decorate(int x0, int x1, int floor)
+private static synchronized void decorate(int x0, int x1, int floor)
 {
     if (floor < 1) return;
 
@@ -1094,7 +1094,7 @@ private static void decorate(int x0, int x1, int floor)
         buildLadder(globalRandom.nextBoolean() ? x0 : x1, floor, ANY_HEIGHT);
 }
 
-private static void fixWalls()
+private static synchronized void fixWalls()
 {
     boolean[][] blockMap = new boolean[length + 1][height + 1];
     for (int x = 0; x < length + 1; x++)
@@ -1115,7 +1115,7 @@ private static void fixWalls()
     blockify(level, blockMap, length + 1, height + 1);
 }
 
-private static void blockify(Level level, boolean[][] blocks, int width, int height)
+private static synchronized void blockify(Level level, boolean[][] blocks, int width, int height)
 {
     int to = 0;
     if (levelType == LevelGenerator.TYPE_CASTLE)
@@ -1225,7 +1225,7 @@ private static void blockify(Level level, boolean[][] blocks, int width, int hei
     }
 }
 
-//private static int buildHillStraight(int xo, int maxLength, int vfloor, final boolean isInGap)
+//private static synchronized int buildHillStraight(int xo, int maxLength, int vfloor, final boolean isInGap)
 //{
 ////    System.out.println("xo = " + xo);
 //    int length = globalRandom.nextInt(10) + 10;
@@ -1329,7 +1329,7 @@ private static void blockify(Level level, boolean[][] blocks, int width, int hei
 //    return length;
 //}
 
-//private static boolean canAddEnemyLine(int x0, int x1, int y)
+//private static synchronized boolean canAddEnemyLine(int x0, int x1, int y)
 //{
 //    if (!creaturesMaskParser.canAdd())
 //    {
@@ -1351,7 +1351,7 @@ private static void blockify(Level level, boolean[][] blocks, int width, int hei
 //    return res;
 //}
 //
-//private static void addEnemiesLine(int x0, int x1, int y)
+//private static synchronized void addEnemiesLine(int x0, int x1, int y)
 //{
 //    if (x0 > 0)
 //        return;

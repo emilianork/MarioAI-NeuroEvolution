@@ -11,17 +11,15 @@ import java.util.ConcurrentModificationException;
 
 public class Fitness extends Thread {
 	
-	int index;
-	double[] fitnessTable;
 	NeuronalAgent agent;
 	MarioAIOptions[] options;
+	double eval;
 	
-	public Fitness(int index, double[] fitnessTable, NeuronalAgent agent,
+	public Fitness(NeuronalAgent agent,
 					MarioAIOptions[] options) {
-		this.index = index;
-		this.fitnessTable = fitnessTable;
 		this.agent = agent;
 		this.options = options;
+		this.eval = 0.0;
 	}
 	
 	public void run() {
@@ -34,11 +32,15 @@ public class Fitness extends Thread {
 				fitness += task.fitness();
 			}
 			double length = options.length;
-			fitnessTable[index] = fitness/length;
+			this.eval = fitness/length;
 		} catch(ConcurrentModificationException cme) {
 			System.exit(0);
 		}
 		return;
+	}
+	
+	public double getFitness() {
+		return eval;
 	}
 	
 }

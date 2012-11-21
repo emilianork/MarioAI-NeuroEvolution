@@ -169,12 +169,12 @@ public Level(int length, int height)
 //        System.out.println("observation = " + observation);
 }
 
-public static void loadBehaviors(DataInputStream dis) throws IOException
+public static synchronized void loadBehaviors(DataInputStream dis) throws IOException
 {
     dis.readFully(Level.TILE_BEHAVIORS);
 }
 
-public static void saveBehaviors(DataOutputStream dos) throws IOException
+public static synchronized void saveBehaviors(DataOutputStream dos) throws IOException
 {
     dos.write(Level.TILE_BEHAVIORS);
 }
@@ -185,7 +185,7 @@ public static Level load(ObjectInputStream ois) throws IOException, ClassNotFoun
     return level;
 }
 
-public static void save(Level lvl, ObjectOutputStream oos) throws IOException
+public static synchronized void save(Level lvl, ObjectOutputStream oos) throws IOException
 {
     oos.writeObject(lvl);
 }

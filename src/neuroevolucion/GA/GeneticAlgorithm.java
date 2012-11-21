@@ -65,7 +65,7 @@ public class GeneticAlgorithm {
                             int numberOfElitism, int maxGenerations, 
                             double proMutation, double proCrossover,
                             int pointsCrossover,
-							String dificultad,String[] semillas) {
+							String dificultad,String[] semillas,String malla) {
 								
         this.numberOfPopulation = numberOfPopulation;
         this.inputs = inputs;
@@ -86,8 +86,8 @@ public class GeneticAlgorithm {
 		
 		for (int i = 0; i < numberOfPopulation; i++) {
 			for(int j = 0;j < semillas.length;j++) {
-				String[] nivel = {"-ls",semillas[j],"-ld",dificultad,"-vis","off","-rfw", "5",
-				"-rfh","5"};
+				String[] nivel = {"-ls",semillas[j],"-ld",dificultad,"-vis","off","-rfw", malla,
+				"-rfh",malla};
 				options[i][j] = new MarioAIOptions(nivel);
 			}
 		}
@@ -160,6 +160,7 @@ public class GeneticAlgorithm {
 			getElitism();
 			getBest();
 		}
+		System.out.println("ACA PASO");
 		saveData();
 		return;
 	}
@@ -168,7 +169,7 @@ public class GeneticAlgorithm {
 		fitnessThread = new Fitness[numberOfPopulation];
 		fitnessNew =  new double[numberOfPopulation];
 		for (int i = 0; i < numberOfPopulation; i++) {
-			fitnessThread[i] = new Fitness(i,fitnessNew,populationNew[i],options[i]); 
+			fitnessThread[i] = new Fitness(populationNew[i],options[i]); 
 		}
 		for (int i = 0; i < numberOfPopulation; i++) {
 			try {
@@ -183,6 +184,7 @@ public class GeneticAlgorithm {
 		for (int i = 0; i < numberOfPopulation; i++) {
 			try {
 				fitnessThread[i].join();
+				fitnessNew[i] = fitnessThread[i].getFitness();
 			} catch (InterruptedException ie) {
 				System.out.println("La evaluacion fallo:");
 				System.out.println("Generacion = " + generation);
@@ -232,10 +234,11 @@ public class GeneticAlgorithm {
             agent.setMadeline(madeline);
             populationNew[i] = agent;
         }
-
-        /*for(int i = 0; i < numberOfPopulation;i++) {
+		/*
+        for(int i = 0; i < numberOfPopulation;i++) {
             fitnessNew[i] = fitness(populationNew[i],i);
-        }*/
+        }
+		*/
 		evaluaPoblacion();
         changePopulation();
 		getElitism();
@@ -330,7 +333,7 @@ public class GeneticAlgorithm {
 	*/
     public void changePopulation() {
         populationOld = populationNew;
-      
+   		fitnessOld = new double[numberOfPopulation];
         for(int i = 0; i < numberOfPopulation;i++) {
 			fitnessOld[i] = fitnessNew[i]; 
 			data[generation][i] = fitnessNew[i];
